@@ -2,16 +2,8 @@
 var char = document.querySelector('#character');
 var height = document.querySelector('#height');
 var button = document.querySelector('#btn');
-
-// Button listening for click event
-button.addEventListener('click', function () {
-    var values = {};
-    var charVal = char.value;
-    var treeHeight = height.value;
-    values.string = charVal;
-    values.height = treeHeight;
-    tree(values);
-});
+// Array.from converts HTMLCollection in a js array in order to utilize forEach().
+var inputArray = Array.from(document.getElementsByTagName('input'))
 
 // Function that builds the tree
 function tree(obj) {
@@ -34,3 +26,38 @@ function tree(obj) {
         console.log(space + str);
     }
 };
+
+// Getting values of input fields
+function getValues() {
+    var values = {};
+    var charVal = char.value;
+    var treeHeight = height.value;
+    values.string = charVal;
+    values.height = treeHeight;
+    return values;
+}
+
+// Listening for botton click event.
+button.addEventListener('click', function () {
+    var values = getValues();
+    tree(values);
+});
+
+// Listening for input field keyup event.
+inputArray.forEach(function (singleInput) {
+    singleInput.addEventListener('keyup', function (e) {
+        if (e.keyCode === 13) {
+            var values = getValues();
+
+            // Check if both fields have values. Otherwise notify the user.
+            if (values.string && values.height) {
+                tree(values);
+                char.value = '';
+                height.value = '';
+                char.focus();
+            } else {
+                alert('Both fields need value. Please try again.');
+            }
+        }
+    });
+});
