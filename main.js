@@ -40,7 +40,11 @@ function getValues() {
 // Listening for botton click event.
 button.addEventListener('click', function () {
     var values = getValues();
-    tree(values);
+    if (values.string && values.height) {
+        tree(values);
+    } else {
+        alert('Both fields need value. Please try again.');
+    }
 });
 
 // Listening for input field keyup event.
